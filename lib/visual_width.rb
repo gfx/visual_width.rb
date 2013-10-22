@@ -4,6 +4,14 @@ require "visual_width/data"
 module VisualWidth
   EAST_ASIAN = true
 
+  if RUBY_VERSION >= "2.1.0"
+    refine String do
+      def visual_width(east_asian = EAST_ASIAN)
+        VisualWidth.count(self)
+      end
+    end
+  end
+
   module_function
 
   @@p1 = /( (?:#{Fullwide} | #{Wide} | #{Ambiguous})+ )/x
