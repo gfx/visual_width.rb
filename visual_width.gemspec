@@ -6,11 +6,11 @@ require 'visual_width/version'
 Gem::Specification.new do |spec|
   spec.name          = "visual_width"
   spec.version       = VisualWidth::VERSION
-  spec.authors       = ["Fuji, Goro"]
-  spec.email         = ["goro-fuji@cookpad.com"]
-  spec.description   = %q{TODO: Write a gem description}
-  spec.summary       = %q{TODO: Write a gem summary}
-  spec.homepage      = ""
+  spec.authors       = ["Fuji, Goro (gfx)"]
+  spec.email         = ["gfuji@cpan.org"]
+  spec.description   = %q{Deals with East Asian Width defined in Unicode}
+  spec.summary       = %q{Ruby Implementation of East Asian Width}
+  spec.homepage      = "https://github.com/gfx/visual_width.rb"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)
