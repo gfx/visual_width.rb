@@ -6,14 +6,17 @@ module VisualWidth
 
   module_function
 
+  @@p1 = /( (?:#{Fullwide} | #{Wide} | #{Ambiguous})+ )/x
+  @@p0 = /( (?:#{Fullwide} | #{Wide}               )+ )/x
+
   def count(str, east_asian = EAST_ASIAN)
     full_width = 0
     if east_asian
-      str.scan(/( (?:#{Fullwide} | #{Wide} | #{Ambiguous})+ )/x) do |m,|
+      str.scan(@@p1) do |m,|
         full_width += m.length
       end
     else
-      str.scan(/( (?:#{Fullwide} | #{Wide})+ )/x) do |m,|
+      str.scan(@@p0) do |m,|
         full_width += m.length
       end
     end
