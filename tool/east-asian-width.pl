@@ -1,4 +1,5 @@
 #!/usr/bin/env perl
+# vim: set expandtab shiftwidth=2 tabstop=2:
 use 5.14.0;
 use strict;
 use warnings;
@@ -66,6 +67,7 @@ infof 'render it';
 my $xslate = Text::Xslate->new(
     type  => "text",
     cache => 0,
+    type  => 'text',
     module => ['Text::Xslate::Bridge::Star'],
 );
 
@@ -87,26 +89,25 @@ module VisualWidth
 <:-
 macro range -> $r {
     if $r[0] == $r[1] {
-        sprintf("(c == 0x%08X)", $r[0]);
+        sprintf('\u{%04X}', $r[0]);
     }
     else {
-        sprintf("(0x%08X <= c && c <= 0x%08X)", $r[0], $r[1]);
+        sprintf('\u{%04X}-\u{%04X}', $r[0], $r[1]);
     }
 }
 -:>
 : macro make_conditions -> $t, $name {
-    def <: $name :>(c)
-        : for $t -> $range {
-            <: range($range) ~ ($~range.is_last ? "" : " ||") :>
-        : }
-        ;
-    end # <: $name :>
+  <: $name :> = '[' +
+    : for $t -> $range {
+    '<: range($range) :>' +
+    : }
+    ']'
 : }
 
-    : make_conditions($W, "W");
+  : make_conditions($W, "Wide");
 
-    : make_conditions($F, "F");
+  : make_conditions($F, "Fullwide");
 
-    : make_conditions($A, "A");
+  : make_conditions($A, "Ambiguous");
 end
 
