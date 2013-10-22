@@ -1,5 +1,4 @@
-# VisualWidth
-
+# VisualWidth [![Build Status](https://travis-ci.org/gfx/visual_width.rb.png?branch=master)](https://travis-ci.org/gfx/visual_width.rb)
 TODO: Write a gem description
 
 ## Installation
