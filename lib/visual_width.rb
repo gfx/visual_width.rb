@@ -12,17 +12,51 @@ module VisualWidth
     end
   end
 
+
+  @@c1 = /( (?:#{Fullwide} | #{Wide} | #{Ambiguous})+ )/x
+  @@c0 = /( (?:#{Fullwide} | #{Wide}               )+ )/x
+
+  @@t1 = /( (?:#{Fullwide} | #{Wide} | #{Ambiguous}) ) | ./x
+  @@t0 = /( (?:#{Fullwide} | #{Wide}               ) ) | ./x
+
   module_function
 
-  @@p1 = /( (?:#{Fullwide} | #{Wide} | #{Ambiguous})+ )/x
-  @@p0 = /( (?:#{Fullwide} | #{Wide}               )+ )/x
-
   def count(str, east_asian: EAST_ASIAN)
+    rx = east_asian ? @@c1 : @@c0
     full_width = 0
-    rx = east_asian ? @@p1 : @@p0
-    str.scan(rx) do |m,|
-      full_width += m.length
+    str.scan(rx) do |w,|
+      full_width += w.length
     end
     (full_width * 2) + (str.length - full_width)
+  end
+
+  def truncate(str, max_length, omission: '...', east_asian: EAST_ASIAN)
+    max = max_length - omission.length
+    rx = east_asian ? @@t1 : @@t0
+    pos = 0
+    width = 0
+    str.scan(rx) do |wide,|
+      if wide
+        width += 2
+      else
+        width += 1
+      end
+
+      if width > max
+        break
+      end
+
+      pos += 1
+
+      if width == max
+        break
+      end
+    end
+
+    if width < str.length
+      str.slice(0, pos) + omission
+    else
+      str
+    end
   end
 end
