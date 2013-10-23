@@ -17,7 +17,14 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+```ruby
+    require 'visual_width'
+
+    p VisualWidth.count("こんにちは") # => 10
+    p VisualWidth.count("abcdefghij") # => 10
+
+    p VisualWidth.truncate("恋すてふ 我が名はまだき 立ちにけり 人知れずこそ 思ひそめしか", 20) # => "恋すてふ 我が名は..."
+```
 
 ## Contributing
 
