@@ -50,6 +50,13 @@ describe VisualWidth do
       expect(s).to eql('The quick br...')
     end
 
+    it "truncates str, adding '(snip)'" do
+      str = "The quick brown fox jumps over the lazy dog."
+      s = VisualWidth.truncate(str, 15, omission: '(snip)')
+      expect(s.visual_width).to be <= 15
+      expect(s).to eql('The quick(snip)')
+    end
+
     it "truncates Wide characters" do
       str = "くにざかいのながいトンネルを抜けるとゆきぐにであった"
       s = VisualWidth.truncate(str, 20)
