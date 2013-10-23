@@ -1,10 +1,12 @@
+# coding: utf-8
+
 require 'rspec'
 
 require 'visual_width/string_refine'
 
 using VisualWidth
 
-describe VisualWidth do
+describe VisualWidth, skip: RUBY_VERSION < "2.0.0" do
   context "String#width" do
     it do
       expect("こんにちは".width).to eql(10)

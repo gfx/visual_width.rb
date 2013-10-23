@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby "2.0.0"
+ruby "1.9.1"
 
 # Specify your gem's dependencies in visual_width.gemspec
 gemspec
