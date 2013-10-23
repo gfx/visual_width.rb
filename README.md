@@ -1,5 +1,8 @@
 # VisualWidth [![Build Status](https://travis-ci.org/gfx/visual_width.rb.png?branch=master)](https://travis-ci.org/gfx/visual_width.rb)
-TODO: Write a gem description
+
+This gem handles Unicode East Asian Width:
+
+* http://www.unicode.org/reports/tr11/
 
 ## Installation
 
@@ -25,6 +28,10 @@ Or install it yourself as:
 
     p VisualWidth.truncate("恋すてふ 我が名はまだき 立ちにけり 人知れずこそ 思ひそめしか", 20) # => "恋すてふ 我が名は..."
 ```
+
+Each method can take `east_asian: false` to tell it is not in an East Asian context, regarding ambiguous characters as half-width.
+
+See [Ambiguous Characters](http://www.unicode.org/reports/tr11/#Ambiguous) in the report.
 
 ## Contributing
 
