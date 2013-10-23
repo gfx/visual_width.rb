@@ -48,35 +48,35 @@ describe VisualWidth do
     it "truncates str, adding '...'" do
       str = "The quick brown fox jumps over the lazy dog."
       s = VisualWidth.truncate(str, 15)
-      expect(s.visual_width).to be <= 15
+      expect(s.width).to be <= 15
       expect(s).to eql('The quick br...')
     end
 
     it "truncates str, adding '(snip)'" do
       str = "The quick brown fox jumps over the lazy dog."
       s = VisualWidth.truncate(str, 15, omission: '(snip)')
-      expect(s.visual_width).to be <= 15
+      expect(s.width).to be <= 15
       expect(s).to eql('The quick(snip)')
     end
 
     it "truncates Wide characters" do
       str = "くにざかいのながいトンネルを抜けるとゆきぐにであった"
       s = VisualWidth.truncate(str, 20)
-      expect(s.visual_width).to be <= 20
+      expect(s.width).to be <= 20
       expect(s).to eql('くにざかいのなが...')
     end
 
     it "truncates mixed character types" do
       str = "くにざかいの ながい トンネルを 抜けると ゆきぐにであった"
       s = VisualWidth.truncate(str, 20)
-      expect(s.visual_width).to be <= 20
+      expect(s.width).to be <= 20
       expect(s).to eql('くにざかいの なが...')
     end
 
     it "truncates Ambiguous characters" do
       str = "αβγδεζηθικλμνξοπρστυφχψω"
       s = VisualWidth.truncate(str, 10)
-      expect(s.visual_width).to be <= 10
+      expect(s.width).to be <= 10
       expect(s).to eql('αβγ...')
     end
   end
@@ -85,7 +85,7 @@ describe VisualWidth do
     it "truncates str with Ambiguous characters" do
       str = "αβγδεζηθικλμνξοπρστυφχψω"
       s = VisualWidth.truncate(str, 10, east_asian: false)
-      expect(s.visual_width(east_asian: false)).to be <= 10
+      expect(s.width(east_asian: false)).to be <= 10
       expect(s).to eql('αβγδεζη...')
     end
   end

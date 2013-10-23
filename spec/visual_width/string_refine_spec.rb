@@ -2,6 +2,7 @@
 
 require 'rspec'
 
+require 'visual_width/string_ext' # workaround Ruby 2.0.0 bug
 require 'visual_width/string_refine'
 
 using VisualWidth
