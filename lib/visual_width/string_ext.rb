@@ -2,7 +2,7 @@ require 'visual_width'
 
 class String
   def width(opts = {})
-    VisualWidth.count(self, opts)
+    VisualWidth.measure(self, opts)
   end
 
   def truncate(max_length, opts = {})

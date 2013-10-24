@@ -3,7 +3,7 @@ require 'visual_width'
 module VisualWidth
   refine String do
     def width(opts = {})
-      VisualWidth.count(self, opts)
+      VisualWidth.measure(self, opts)
     end
 
     def truncate(max_length, opts = {})

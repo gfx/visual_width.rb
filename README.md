@@ -23,8 +23,8 @@ Or install it yourself as:
 ```ruby
     require 'visual_width'
 
-    p VisualWidth.count("こんにちは") # => 10
-    p VisualWidth.count("abcdefghij") # => 10
+    p VisualWidth.measure("こんにちは") # => 10
+    p VisualWidth.measure("abcdefghij") # => 10
 
     p VisualWidth.truncate("恋すてふ 我が名はまだき 立ちにけり 人知れずこそ 思ひそめしか", 20) # => "恋すてふ 我が名は..."
 ```
@@ -43,4 +43,4 @@ See [Ambiguous Characters](http://www.unicode.org/reports/tr11/#Ambiguous) in th
 
 ## See Also
 
-* [unicode-display_width](https://rubygems.org/gems/unicode-display_width) has the same feature as `VisualWidth.count()` but it extends String class directly and is much slower than `VisualWidth.count()`
+* [unicode-display_width](https://rubygems.org/gems/unicode-display_width) has the same feature as `VisualWidth.measure()` but it extends String class directly and is much slower than `VisualWidth.measure()`

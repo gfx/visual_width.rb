@@ -58,7 +58,7 @@ class VisualWidth::Table
 
     def fill(output, max_width, cell, f)
       f ||= LEFT
-      w = VisualWidth.count(cell)
+      w = VisualWidth.measure(cell)
       output << f.call(cell, (max_width - w))
     end
   end
@@ -72,7 +72,7 @@ class VisualWidth::Table
     result = []
     rows.each_with_index do |row|
       row.each_with_index do |cell, i|
-        result[i] = max(result[i] || 0, VisualWidth.count(cell))
+        result[i] = max(result[i] || 0, VisualWidth.measure(cell))
       end
     end
     result

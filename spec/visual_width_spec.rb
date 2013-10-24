@@ -6,37 +6,37 @@ require 'visual_width'
 require 'visual_width/string_ext'
 
 describe VisualWidth do
-  context ".count" do
-    it "counts Half characters" do
-      expect(VisualWidth.count("foo")).to eql(3)
+  context ".measure" do
+    it "measures Half characters" do
+      expect(VisualWidth.measure("foo")).to eql(3)
     end
-    it "counts Wide characters" do
-      expect(VisualWidth.count("こんにちは")).to eql(10)
-    end
-
-    it "counts Half characters" do
-      expect(VisualWidth.count("ｺﾝﾆﾁﾊ")).to eql(5)
+    it "measures Wide characters" do
+      expect(VisualWidth.measure("こんにちは")).to eql(10)
     end
 
-    it "counts Ambiguous characters" do
-      expect(VisualWidth.count("αβ")).to eql(4)
+    it "measures Half characters" do
+      expect(VisualWidth.measure("ｺﾝﾆﾁﾊ")).to eql(5)
+    end
+
+    it "measures Ambiguous characters" do
+      expect(VisualWidth.measure("αβ")).to eql(4)
     end
   end
 
   context ".counnt with east_asian: false" do
-    it "counts Halfwide characters" do
-      expect(VisualWidth.count("foo", east_asian: false)).to eql(3)
+    it "measures Halfwide characters" do
+      expect(VisualWidth.measure("foo", east_asian: false)).to eql(3)
     end
-    it "counts Wide characters" do
-      expect(VisualWidth.count("こんにちは", east_asian: false)).to eql(10)
-    end
-
-    it "counts Half characters" do
-      expect(VisualWidth.count("ｺﾝﾆﾁﾊ", east_asian: false)).to eql(5)
+    it "measures Wide characters" do
+      expect(VisualWidth.measure("こんにちは", east_asian: false)).to eql(10)
     end
 
-    it "counts Ambiguous characters" do
-      expect(VisualWidth.count("αβ", east_asian: false)).to eql(2)
+    it "measures Half characters" do
+      expect(VisualWidth.measure("ｺﾝﾆﾁﾊ", east_asian: false)).to eql(5)
+    end
+
+    it "measures Ambiguous characters" do
+      expect(VisualWidth.measure("αβ", east_asian: false)).to eql(2)
     end
   end
 
