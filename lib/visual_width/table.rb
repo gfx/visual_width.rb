@@ -33,10 +33,7 @@ class VisualWidth::Table
     line(output, max_widths)
     output
   end
-
-  def line (output, max_widths)
-    output << '+' << max_widths.map { |width| '-' * width }.join('+') << "+\n"
-  end
+  private
 
   def draw_row(output, max_widths, format, row, separated: false)
     if separated
@@ -57,23 +54,23 @@ class VisualWidth::Table
     end
   end
 
+
+  def line (output, max_widths)
+    output << '+' << max_widths.map { |width| '-' * width }.join('+') << "+\n"
+  end
+
+
   def fill(output, max_width, cell, f)
     f ||= LEFT
     w = VisualWidth.measure(cell)
     output << f.call(cell, (max_width - w))
   end
 
-  private
-
-  def max(a, b)
-    a > b ? a : b
-  end
-
   def calc_max_widths(rows) # -> [max_col0_width, max_col1_width, ...]
     result = []
     rows.each_with_index do |row|
       row.each_with_index do |cell, i|
-        result[i] = max(result[i] || 0, VisualWidth.measure(cell))
+        result[i] = [result[i] || 0, VisualWidth.measure(cell)].max
       end
     end
     result
