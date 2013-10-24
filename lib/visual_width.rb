@@ -4,11 +4,14 @@ require "visual_width/data"
 module VisualWidth
   EAST_ASIAN = true
 
-  @@c1 = /( (?:#{Fullwide} | #{Wide} | #{Ambiguous})+ )/x
-  @@c0 = /( (?:#{Fullwide} | #{Wide}               )+ )/x
+  r1 = /#{Fullwide} | #{Wide} | #{Ambiguous}/x;
+  r0 = /#{Fullwide} | #{Wide}               /x;
 
-  @@t1 = /( (?:#{Fullwide} | #{Wide} | #{Ambiguous}) ) | ./x
-  @@t0 = /( (?:#{Fullwide} | #{Wide}               ) ) | ./x
+  c1 = /( #{r1}+ )/x
+  c0 = /( #{r0}+ )/x
+
+  t1 = /( #{r1} ) | . /x
+  t0 = /( #{r0} ) | . /x
 
   module_function
 
@@ -22,26 +25,18 @@ module VisualWidth
   end
 
   def truncate(str, max_length, omission: '...', east_asian: EAST_ASIAN)
-    max = max_length - omission.length
     rx = east_asian ? @@t1 : @@t0
+    max = max_length - omission.length
     pos = 0
     width = 0
     str.scan(rx) do |wide,|
-      if wide
-        width += 2
-      else
-        width += 1
-      end
+      width += wide ? 2 : 1
 
-      if width > max
-        break
-      end
+      break if width > max
 
       pos += 1
 
-      if width == max
-        break
-      end
+      break if width == max
     end
 
     if width < str.length
