@@ -25,8 +25,15 @@ class VisualWidth::Table
   def draw(rows, header: nil, output: "")
     max_widths = calc_max_widths(rows)
     h = header || @header
-    format_center = h ?  [CENTER] * h.length : nil
-    draw_row(output, max_widths, format_center, h, separated: true)
+    if h
+      max_widths = h.map { |cell| VisualWidth.measure(cell) }
+        .zip(max_widths)
+        .map { |values| values.max }
+      format_header = [CENTER] * h.length
+    else
+      format_header = nil
+    end
+    draw_row(output, max_widths, format_header, h, separated: true)
     rows.each do |row|
       draw_row(output, max_widths, @format, row)
     end
@@ -43,7 +50,7 @@ class VisualWidth::Table
     if row
       output << '|'
       row.each_with_index do |cell, i|
-        fill(output, max_widths[i], cell, format[i])
+        fill(output, max_widths[i], cell.to_s, format[i])
         output << '|'
       end
       output << "\n"
@@ -54,11 +61,9 @@ class VisualWidth::Table
     end
   end
 
-
   def line (output, max_widths)
     output << '+' << max_widths.map { |width| '-' * width }.join('+') << "+\n"
   end
-
 
   def fill(output, max_width, cell, f)
     f ||= LEFT
@@ -70,7 +75,7 @@ class VisualWidth::Table
     result = []
     rows.each_with_index do |row|
       row.each_with_index do |cell, i|
-        result[i] = [result[i] || 0, VisualWidth.measure(cell)].max
+        result[i] = [result[i] || 0, VisualWidth.measure(cell.to_s)].max
       end
     end
     result

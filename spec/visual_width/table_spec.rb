@@ -54,5 +54,24 @@ describe VisualWidth::Table do
 +----------+----------+
       TEXT
     end
+
+    it "does jobs with non-string elements" do
+      header = ['Student', 'Mid-Terms', 'Finals']
+      rows = [
+        ['Sam', 94, 93],
+        ['Jane', 92, 99],
+        ['Average', 93, 96],
+      ]
+
+      expect(VisualWidth::Table.new.draw(rows, header: header)).to eql(<<-'TEXT')
++-------+---------+------+
+|Student|Mid-Terms|Finals|
++-------+---------+------+
+|Sam    |94       |93    |
+|Jane   |92       |99    |
+|Average|93       |96    |
++-------+---------+------+
+      TEXT
+    end
   end
 end
