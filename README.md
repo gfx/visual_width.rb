@@ -21,12 +21,28 @@ Or install it yourself as:
 ## Usage
 
 ```ruby
+    # VisualWidth
     require 'visual_width'
 
     p VisualWidth.measure("こんにちは") # => 10
     p VisualWidth.measure("abcdefghij") # => 10
 
     p VisualWidth.truncate("恋すてふ 我が名はまだき 立ちにけり 人知れずこそ 思ひそめしか", 20) # => "恋すてふ 我が名は..."
+
+    # VisualWidth::Table
+    require 'visual_width/table'
+
+    t = VisualWidth::Table.new(
+      format: [VisualWidth::Table::LEFT, VisualWidth::Table::RIGHT, VisualWidth::Table::RIGHT]
+    )
+
+    header = ['Student', 'Mid-Terms', 'Finals']
+    rows = [
+      ['Sam', 94, 93],
+      ['Jane', 92, 99],
+      ['Average', 93, 96],
+    ]
+    t.draw(rows, header: header)
 ```
 
 Each method can take `east_asian: false` to tell it is not in an East Asian context, regarding ambiguous characters as half-width.
