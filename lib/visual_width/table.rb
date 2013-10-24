@@ -17,20 +17,20 @@ class VisualWidth::Table
     (' ' * half.floor) + cell + (' ' * half.ceil)
   }
 
-  def initialize(header: nil, footer: nil, format: [])
+  def initialize(header: nil, format: [])
     @header = header
-    @footer = footer
     @format = format
   end
 
-  def draw(rows, output: "")
+  def draw(rows, header: nil, output: "")
     max_widths = calc_max_widths(rows)
-    format_center = [CENTER] * (rows[0] || []).length
-    draw_row(output, max_widths, format_center, @header, separated: true)
+    h = header || @header
+    format_center = h ?  [CENTER] * h.length : nil
+    draw_row(output, max_widths, format_center, h, separated: true)
     rows.each do |row|
       draw_row(output, max_widths, @format, row)
     end
-    draw_row(output, max_widths, format_center, @footer, separated: true)
+    line(output, max_widths)
     output
   end
 
@@ -55,13 +55,14 @@ class VisualWidth::Table
         line(output, max_widths)
       end
     end
-
-    def fill(output, max_width, cell, f)
-      f ||= LEFT
-      w = VisualWidth.measure(cell)
-      output << f.call(cell, (max_width - w))
-    end
   end
+
+  def fill(output, max_width, cell, f)
+    f ||= LEFT
+    w = VisualWidth.measure(cell)
+    output << f.call(cell, (max_width - w))
+  end
+
   private
 
   def max(a, b)

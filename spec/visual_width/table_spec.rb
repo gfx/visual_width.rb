@@ -43,7 +43,6 @@ describe VisualWidth::Table do
     it 'draws text table with header/footer' do
       t = VisualWidth::Table.new(
         header: %w(A B),
-        footer: %w(C D),
       )
       expect(t.draw(rows)).to eql(<<-'TEXT')
 +----------+----------+
@@ -52,8 +51,6 @@ describe VisualWidth::Table do
 |りんご    |なし      |
 |べにしぐれ|せいぎょく|
 |となみ    |いなぎ    |
-+----------+----------+
-|    C     |    D     |
 +----------+----------+
       TEXT
     end
