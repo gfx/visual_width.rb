@@ -40,3 +40,7 @@ See [Ambiguous Characters](http://www.unicode.org/reports/tr11/#Ambiguous) in th
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
+
+## See Also
+
+* [unicode-display_width](https://rubygems.org/gems/unicode-display_width) has the same feature as `VisualWidth.count()` but it extends String class directly and is much slower than `VisualWidth.count()`
