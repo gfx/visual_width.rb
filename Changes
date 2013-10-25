@@ -1,4 +1,7 @@
 This is a revision history of visual_width gem.
 
+0.0.2 2013-10-26 08:51:02+0900
+    - Added visual_width/table.rb to draw text tables
+
 0.0.1 2013-10-24 00:22:53+0900
     - This is the initial release of visual_width
