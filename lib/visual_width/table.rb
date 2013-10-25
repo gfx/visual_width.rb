@@ -22,7 +22,7 @@ class VisualWidth::Table
     @format = format
   end
 
-  def draw(rows, header: nil, output: "")
+  def render(rows, header: nil, output: "")
     max_widths = calc_max_widths(rows)
     h = header || @header
     if h
@@ -40,6 +40,12 @@ class VisualWidth::Table
     line(output, max_widths)
     output
   end
+
+  def draw(*args)
+    warn "draw() is deprecated. Use render() instead."
+    render(*args)
+  end
+
   private
 
   def draw_row(output, max_widths, format, row, separated: false)

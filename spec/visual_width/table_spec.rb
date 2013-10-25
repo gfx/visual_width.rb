@@ -13,11 +13,11 @@ describe VisualWidth::Table do
     rows
   end
 
-  context "#draw" do
-    it 'draws text table' do
+  context "#render" do
+    it 'renders text table' do
       t = VisualWidth::Table.new
 
-      expect(t.draw(rows)).to eql(<<-'TEXT')
+      expect(t.render(rows)).to eql(<<-'TEXT')
 +----------+----------+
 |りんご    |なし      |
 |べにしぐれ|せいぎょく|
@@ -26,12 +26,12 @@ describe VisualWidth::Table do
       TEXT
     end
 
-    it 'draws text table with formatter/CENTER, RIGHT' do
+    it 'renders text table with formatter/CENTER, RIGHT' do
       t = VisualWidth::Table.new(
         format: [VisualWidth::Table::CENTER, VisualWidth::Table::RIGHT],
       )
 
-      expect(t.draw(rows)).to eql(<<-'TEXT')
+      expect(t.render(rows)).to eql(<<-'TEXT')
 +----------+----------+
 |  りんご  |      なし|
 |べにしぐれ|せいぎょく|
@@ -40,11 +40,11 @@ describe VisualWidth::Table do
       TEXT
     end
 
-    it 'draws text table with header/footer' do
+    it 'renders text table with header/footer' do
       t = VisualWidth::Table.new(
         header: %w(A B),
       )
-      expect(t.draw(rows)).to eql(<<-'TEXT')
+      expect(t.render(rows)).to eql(<<-'TEXT')
 +----------+----------+
 |    A     |    B     |
 +----------+----------+
@@ -63,7 +63,7 @@ describe VisualWidth::Table do
         ['Average', 93, 96],
       ]
 
-      expect(VisualWidth::Table.new.draw(rows, header: header)).to eql(<<-'TEXT')
+      expect(VisualWidth::Table.new.render(rows, header: header)).to eql(<<-'TEXT')
 +-------+---------+------+
 |Student|Mid-Terms|Finals|
 +-------+---------+------+
