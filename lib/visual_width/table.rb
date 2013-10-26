@@ -1,41 +1,51 @@
 require 'visual_width'
+require 'visual_width/formatter'
 
 class VisualWidth::Table
-  attr_accessor :header, :footer, :format
+  include VisualWidth
 
-  # align (left, right, center)
-  LEFT = -> (cell, fill) {
-    cell + (' ' * fill)
-  }
+  attr_accessor :header, :style
 
-  RIGHT = -> (cell, fill) {
-    (' ' * fill) + cell
-  }
-
-  CENTER = -> (cell, fill) {
-    half = fill / 2.0
-    (' ' * half.floor) + cell + (' ' * half.ceil)
-  }
-
-  def initialize(header: nil, format: [])
+  def initialize(header: nil, style: [])
     @header = header
-    @format = format
+    @style  = style
+
+    @needs_wrap = @style.any? { |style| style[:width] != nil }
   end
 
   def render(rows, header: nil, output: "")
+    if @needs_wrap
+      default_style = {}
+      rows = rows.map do |row|
+        i = 0
+        row.map do |cell|
+          cell = "#{cell}"
+          width = (@style[i] || default_style)[:width]
+          i += 1
+          if width
+            wrap(cell, width)
+          else
+            cell
+          end
+        end
+      end
+    end
     max_widths = calc_max_widths(rows)
     h = header || @header
+    style_header = []
     if h
-      max_widths = h.map { |cell| VisualWidth.measure(cell) }
+      max_widths = calc_max_widths([h])
         .zip(max_widths)
         .map { |values| values.max }
-      format_header = [CENTER] * h.length
-    else
-      format_header = nil
+      h.length.times do |i|
+        style = @style[i] || {}
+
+        style_header << style.merge(align: :center)
+      end
     end
-    draw_header(output, max_widths, format_header, h)
+    draw_header(output, max_widths, style_header, h)
     rows.each do |row|
-      draw_row(output, max_widths, @format, row)
+      draw_row(output, max_widths, @style, row)
     end
     line(output, max_widths)
     output
@@ -48,49 +58,73 @@ class VisualWidth::Table
 
   private
 
-  def draw_header(output, max_widths, format, row)
+  def draw_header(output, max_widths, style, row)
     line(output, max_widths)
 
     if row && row.length > 0
-      output << '|'
-      row.each_with_index do |cell, i|
-        fill(output, max_widths[i], cell.to_s, format[i])
-        output << '|'
-      end
-      output << "\n"
-
+      draw_row(output, max_widths, style, row)
       line(output, max_widths)
     end
   end
 
-  def draw_row(output, max_widths, format, row)
-    if row
-      output << '|'
-      row.each_with_index do |cell, i|
-        fill(output, max_widths[i], cell.to_s, format[i])
-        output << '|'
+  def draw_row(output, max_widths, style, row)
+    output << '|'
+
+    rows = []
+    max_widths.length.times do |i|
+      cell = "#{row[i]}"
+      s = style[i] || {}
+      align = s[:align] || :left
+      width = s[:width] || max_widths[i]
+      c = cell.split(/\n/)
+      if c.length == 0
+        c << ""
       end
-      output << "\n"
+      output << aligner.send(align, c.shift.strip, width) << '|'
+      if c.length > 0
+        c.each_with_index do |new_cell, row_id|
+          rows[row_id] ||= []
+          rows[row_id][i] = new_cell
+        end
+      end
     end
+    output << "\n"
+
+    rows.each do |row|
+      draw_row(output, max_widths, style, row)
+    end
+
+    output
   end
 
-  def line (output, max_widths)
-    output << '+' << max_widths.map { |width| '-' * width }.join('+') << "+\n"
+  def line (output, widths)
+    output << '+' << widths.map { |width| '-' * width }.join('+') << "+\n"
   end
 
-  def fill(output, max_width, cell, f)
-    f ||= LEFT
-    w = VisualWidth.measure(cell)
-    output << f.call(cell, (max_width - w))
+  def aligner
+    VisualWidth::Formatter::Align.new
   end
 
   def calc_max_widths(rows) # -> [max_col0_width, max_col1_width, ...]
     result = []
+    default_style = {}
     rows.each_with_index do |row|
       row.each_with_index do |cell, i|
-        result[i] = [result[i] || 0, VisualWidth.measure(cell.to_s)].max
+        ws = "#{cell}".split(/\n/).map do |line|
+          measure(line)
+        end
+        style = @style[i] || default_style
+        result[i] = (ws << (result[i] || 0) << (style[:width] || 0)).max
       end
     end
     result
+  end
+
+  def wrap(cell, width)
+    s = ""
+    each_width(cell.strip, width) do |line|
+      s << line.strip << "\n"
+    end
+    s
   end
 end

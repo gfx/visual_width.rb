@@ -1,13 +1,17 @@
 # VisualWidth::Table
 require 'visual_width/table'
 t = VisualWidth::Table.new(
-  format: [VisualWidth::Table::LEFT, VisualWidth::Table::RIGHT, VisualWidth::Table::RIGHT]
+  style: [
+    { align: :center, width:  8 },
+    { align: :center, width:  8 },
+    { align: :right,  width:  5 },
+  ],
 )
 
-header = ['Student', 'Mid-Terms', 'Finals']
+header = ['Nick', 'FullName', 'Age']
 rows = [
-  ['アキラ', 94, 93],
-  ['ケイ', 92, 99],
-  ['Average', 93, 96],
+  ['カネダ', '金田 正太郎', 17],
+  ['テツオ', '島 鉄雄', 16],
+  ['ケイ', '?', 18],
 ]
 puts t.render(rows, header: header)

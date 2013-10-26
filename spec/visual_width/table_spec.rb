@@ -26,9 +26,9 @@ describe VisualWidth::Table do
       TEXT
     end
 
-    it 'renders text table with formatter/CENTER, RIGHT' do
+    it 'renders text table with style/CENTER, RIGHT' do
       t = VisualWidth::Table.new(
-        format: [VisualWidth::Table::CENTER, VisualWidth::Table::RIGHT],
+        style: [{align: :center}, {align: :right}],
       )
 
       expect(t.render(rows)).to eql(<<-'TEXT')
@@ -71,6 +71,18 @@ describe VisualWidth::Table do
 |Jane   |92       |99    |
 |Average|93       |96    |
 +-------+---------+------+
+      TEXT
+    end
+  end
+
+  context "#render with wrap" do
+    it "wraps with 10 width" do
+      t = VisualWidth::Table.new(style: [{width: 10}, {width: 10}])
+      expect(t.render([['テレポーター！', '*いしのなかにいる*']])).to eql(<<-'TEXT')
++----------+----------+
+|テレポータ|*いしのな |
+|ー！      |かにいる* |
++----------+----------+
       TEXT
     end
   end
