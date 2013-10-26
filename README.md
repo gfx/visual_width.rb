@@ -20,34 +20,41 @@ Or install it yourself as:
 
 ## Usage
 
-```ruby
-    # VisualWidth
-    require 'visual_width'
+## `visual_width`:
 
+```ruby
     p VisualWidth.measure("こんにちは") # => 10
     p VisualWidth.measure("abcdefghij") # => 10
 
     p VisualWidth.truncate("恋すてふ 我が名はまだき 立ちにけり 人知れずこそ 思ひそめしか", 20) # => "恋すてふ 我が名は..."
+```
 
-    # VisualWidth::Table
-    require 'visual_width/table'
+`.measure()` and `truncate()` methods takes `east_asian: false` option to tell it is not in an East Asian context, regarding ambiguous characters as half-width.
+See [Ambiguous Characters](http://www.unicode.org/reports/tr11/#Ambiguous) in the report.
 
+## `visual_width/table`:
+
+```
     t = VisualWidth::Table.new(
       format: [VisualWidth::Table::LEFT, VisualWidth::Table::RIGHT, VisualWidth::Table::RIGHT]
     )
 
     header = ['Student', 'Mid-Terms', 'Finals']
     rows = [
-      ['Sam', 94, 93],
-      ['Jane', 92, 99],
+      ['アキラ', 94, 93],
+      ['ケイ', 92, 99],
       ['Average', 93, 96],
     ]
-    t.draw(rows, header: header)
+    puts t.render(rows, header: header)
+    # =>
+    # +-------+---------+------+
+    # |Student|Mid-Terms|Finals|
+    # +-------+---------+------+
+    # |アキラ |       94|    93|
+    # |ケイ   |       92|    99|
+    # |Average|       93|    96|
+    # +-------+---------+------+
 ```
-
-Each method can take `east_asian: false` to tell it is not in an East Asian context, regarding ambiguous characters as half-width.
-
-See [Ambiguous Characters](http://www.unicode.org/reports/tr11/#Ambiguous) in the report.
 
 ## Contributing
 

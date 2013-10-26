@@ -6,8 +6,8 @@ t = VisualWidth::Table.new(
 
 header = ['Student', 'Mid-Terms', 'Finals']
 rows = [
-  ['Sam', 94, 93],
-  ['Jane', 92, 99],
+  ['アキラ', 94, 93],
+  ['ケイ', 92, 99],
   ['Average', 93, 96],
 ]
-puts t.draw(rows, header: header)
+puts t.render(rows, header: header)
