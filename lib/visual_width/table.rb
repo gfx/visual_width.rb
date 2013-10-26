@@ -8,19 +8,30 @@ class VisualWidth::Table
 
   def initialize(header: nil, style: [])
     @header = header
-    @style  = style
+    @style  = style.clone
 
-    @needs_wrap = @style.any? { |style| style[:width] != nil }
+    if header
+      header.length.times do |i|
+        @style[i] ||= {}
+      end
+    end
+
+    widths = @style.map { |s| s[:width] }
+    @needs_wrap = widths.any?
+    @is_fixed_width = widths.all?
+    if !@is_fixed_width && header
+      @header_widths = calc_max_widths([header])
+    end
   end
 
   def render(rows, header: nil, output: "")
     if @needs_wrap
-      default_style = {}
       rows = rows.map do |row|
         i = 0
         row.map do |cell|
           cell = "#{cell}"
-          width = (@style[i] || default_style)[:width]
+          style = (@style[i] ||= {})
+          width = style[:width]
           i += 1
           if width
             wrap(cell, width)
@@ -34,12 +45,12 @@ class VisualWidth::Table
     h = header || @header
     style_header = []
     if h
-      max_widths = calc_max_widths([h])
+      header_widths = header ? calc_max_widths([header]) : @header_widths
+      max_widths = header_widths
         .zip(max_widths)
         .map { |values| values.max }
       h.length.times do |i|
-        style = @style[i] || {}
-
+        style = (@style[i] ||= {})
         style_header << style.merge(align: :center)
       end
     end
@@ -73,9 +84,9 @@ class VisualWidth::Table
     rows = []
     max_widths.length.times do |i|
       cell = "#{row[i]}"
-      s = style[i] || {}
-      align = s[:align] || :left
-      width = s[:width] || max_widths[i]
+      st = (style[i] ||= {})
+      align = st[:align] || :left
+      width = st[:width] || max_widths[i]
       c = cell.split(/\n/)
       if c.length == 0
         c << ""
@@ -107,13 +118,12 @@ class VisualWidth::Table
 
   def calc_max_widths(rows) # -> [max_col0_width, max_col1_width, ...]
     result = []
-    default_style = {}
     rows.each_with_index do |row|
       row.each_with_index do |cell, i|
         ws = "#{cell}".split(/\n/).map do |line|
           measure(line)
         end
-        style = @style[i] || default_style
+        style = (@style[i] ||= {})
         result[i] = (ws << (result[i] || 0) << (style[:width] || 0)).max
       end
     end

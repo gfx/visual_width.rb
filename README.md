@@ -43,15 +43,15 @@ See [Ambiguous Characters](http://www.unicode.org/reports/tr11/#Ambiguous) in th
         { align: :center, width:  8 },
         { align: :right,  width:  5 },
       ],
+      header: ['Nick', 'FullName', 'Age'],
     )
 
-    header = ['Nick', 'FullName', 'Age']
     rows = [
       ['カネダ', '金田 正太郎', 17],
       ['テツオ', '島 鉄雄', 16],
       ['ケイ', '?', 18],
     ]
-    puts t.render(rows, header: header)
+    puts t.render(rows)
     # +--------+--------+-----+
     # |  Nick  |FullName| Age |
     # +--------+--------+-----+

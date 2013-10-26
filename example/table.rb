@@ -6,12 +6,12 @@ t = VisualWidth::Table.new(
     { align: :center, width:  8 },
     { align: :right,  width:  5 },
   ],
+  header: ['Nick', 'FullName', 'Age'],
 )
 
-header = ['Nick', 'FullName', 'Age']
 rows = [
   ['カネダ', '金田 正太郎', 17],
   ['テツオ', '島 鉄雄', 16],
   ['ケイ', '?', 18],
 ]
-puts t.render(rows, header: header)
+puts t.render(rows)
