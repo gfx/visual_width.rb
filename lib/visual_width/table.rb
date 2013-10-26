@@ -33,7 +33,7 @@ class VisualWidth::Table
     else
       format_header = nil
     end
-    draw_row(output, max_widths, format_header, h, separated: true)
+    draw_header(output, max_widths, format_header, h)
     rows.each do |row|
       draw_row(output, max_widths, @format, row)
     end
@@ -48,12 +48,10 @@ class VisualWidth::Table
 
   private
 
-  def draw_row(output, max_widths, format, row, separated: false)
-    if separated
-      line(output, max_widths)
-    end
+  def draw_header(output, max_widths, format, row)
+    line(output, max_widths)
 
-    if row
+    if row && row.length > 0
       output << '|'
       row.each_with_index do |cell, i|
         fill(output, max_widths[i], cell.to_s, format[i])
@@ -61,9 +59,18 @@ class VisualWidth::Table
       end
       output << "\n"
 
-      if separated
-        line(output, max_widths)
+      line(output, max_widths)
+    end
+  end
+
+  def draw_row(output, max_widths, format, row)
+    if row
+      output << '|'
+      row.each_with_index do |cell, i|
+        fill(output, max_widths[i], cell.to_s, format[i])
+        output << '|'
       end
+      output << "\n"
     end
   end
 
