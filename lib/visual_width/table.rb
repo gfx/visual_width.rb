@@ -80,7 +80,6 @@ class VisualWidth::Table
 
   def draw_row(output, max_widths, style, row)
     output << '|'
-
     rows = []
     max_widths.length.times do |i|
       cell = "#{row[i]}"
@@ -91,7 +90,8 @@ class VisualWidth::Table
       if c.length == 0
         c << ""
       end
-      output << aligner.send(align, c.shift.strip, width) << '|'
+      output << aligner.send(align, c.shift.strip, width)
+      output << '|'
       if c.length > 0
         c.each_with_index do |new_cell, row_id|
           rows[row_id] ||= []
@@ -117,7 +117,7 @@ class VisualWidth::Table
   end
 
   def calc_max_widths(rows) # -> [max_col0_width, max_col1_width, ...]
-    result = []
+    result = Array.new((@header || rows[0] || []).length, 0)
     rows.each_with_index do |row|
       row.each_with_index do |cell, i|
         ws = "#{cell}".split(/\n/).map do |line|
