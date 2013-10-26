@@ -89,4 +89,24 @@ describe VisualWidth do
       expect(s).to eql('αβγδεζη...')
     end
   end
+
+  context ".each_width" do
+    it "splits str in visual width" do
+      str = "恋すてふ_我が名はまだき_立ちにけり_人知れずこそ_思ひそめしか"
+
+      values = []
+      VisualWidth.each_width(str, 10) do |line|
+        values << line
+      end
+      expect(values).to eql(%w(
+        恋すてふ_
+        我が名はま
+        だき_立ち
+        にけり_人
+        知れずこそ
+        _思ひそめ
+        しか
+      ))
+    end
+  end
 end
