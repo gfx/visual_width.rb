@@ -2,6 +2,12 @@ require 'visual_width'
 
 module VisualWidth::Formatter
   class Align
+    include VisualWidth
+
+    def initialize(east_asian: VisualWidth::EAST_ASIAN)
+      @east_asian = east_asian
+    end
+
     def left(cell, width)
       align(cell, width) do |line, fill|
         line + (' ' * fill)
@@ -24,7 +30,7 @@ module VisualWidth::Formatter
     private
 
     def align(cell, width)
-      w = VisualWidth.measure(cell)
+      w = measure(cell, east_asian: @east_asian)
       if w > width
         raise ArgumentError, "Invalid width cell: #{cell.inspect}, width: #{width.inspect}"
       end

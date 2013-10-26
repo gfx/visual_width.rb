@@ -6,9 +6,10 @@ class VisualWidth::Table
 
   attr_accessor :header, :style
 
-  def initialize(header: nil, style: [])
+  def initialize(header: nil, style: [], east_asian: VisualWidth::EAST_ASIAN)
     @header = header
     @style  = style.clone
+    @east_asian = east_asian
 
     if header
       header.length.times do |i|
@@ -90,7 +91,7 @@ class VisualWidth::Table
       if c.length == 0
         c << ""
       end
-      output << aligner.send(align, c.shift.strip, width)
+      output << ' ' << aligner.send(align, c.shift.strip, width) << ' '
       output << '|'
       if c.length > 0
         c.each_with_index do |new_cell, row_id|
@@ -109,11 +110,11 @@ class VisualWidth::Table
   end
 
   def line (output, widths)
-    output << '+' << widths.map { |width| '-' * width }.join('+') << "+\n"
+    output << '+' << widths.map { |width| '-' * (width+2) }.join('+') << "+\n"
   end
 
   def aligner
-    VisualWidth::Formatter::Align.new
+    VisualWidth::Formatter::Align.new(east_asian: @east_asian)
   end
 
   def calc_max_widths(rows) # -> [max_col0_width, max_col1_width, ...]
@@ -121,7 +122,7 @@ class VisualWidth::Table
     rows.each_with_index do |row|
       row.each_with_index do |cell, i|
         ws = "#{cell}".split(/\n/).map do |line|
-          measure(line)
+          measure(line, east_asian: @east_asian)
         end
         style = (@style[i] ||= {})
         result[i] = (ws << (result[i] || 0) << (style[:width] || 0)).max
