@@ -10,5 +10,6 @@ task :data do
 end
 
 task :bench do
-  sh "ruby -Ilib tool/benchmark.rb"
+  sh "ruby -Ilib tool/benchmark-measure.rb"
+  sh "ruby -Ilib tool/benchmark-table.rb"
 end
