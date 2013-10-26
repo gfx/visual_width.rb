@@ -63,7 +63,7 @@ describe VisualWidth::Table do
         ['Average', 93, 96],
       ]
 
-      expect(VisualWidth::Table.new.render(rows, header: header)).to eql(<<-'TEXT')
+      expect(VisualWidth::Table.new(header: header).render(rows)).to eql(<<-'TEXT')
 +-------+---------+------+
 |Student|Mid-Terms|Finals|
 +-------+---------+------+

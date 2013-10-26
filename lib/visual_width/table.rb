@@ -23,7 +23,7 @@ class VisualWidth::Table
     end
   end
 
-  def render(rows, header: nil, output: "")
+  def render(rows, output: "")
     if @needs_wrap
       rows = rows.map do |row|
         i = 0
@@ -41,19 +41,20 @@ class VisualWidth::Table
       end
     end
     max_widths = calc_max_widths(rows)
-    h = header || @header
-    style_header = []
-    if h
-      header_widths = header ? calc_max_widths([header]) : @header_widths
-      max_widths = header_widths
+    if @header
+      header_style = []
+      max_widths = @header_widths
         .zip(max_widths)
         .map { |values| values.max }
-      h.length.times do |i|
+      @header.length.times do |i|
         style = (@style[i] ||= {})
-        style_header << style.merge(align: :center)
+        header_style << style.merge(align: :center)
       end
+      draw_header(output, max_widths, header_style, @header)
+    else
+      line(output, max_widths)
     end
-    draw_header(output, max_widths, style_header, h)
+
     rows.each do |row|
       draw_row(output, max_widths, @style, row)
     end
