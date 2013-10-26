@@ -18,8 +18,7 @@ class VisualWidth::Table
 
     widths = @style.map { |s| s[:width] }
     @needs_wrap = widths.any?
-    @is_fixed_width = widths.all?
-    if !@is_fixed_width && header
+    if header
       @header_widths = calc_max_widths([header])
     end
   end
