@@ -1,6 +1,6 @@
 This is a revision history of visual_width gem.
 
-0.0.3 2013-10-26 15:58:51+0900
+0.0.4 2013-10-26 15:58:51+0900
     - Revise interface of VisualWidth::Table
 
 0.0.2 2013-10-26 08:51:02+0900
