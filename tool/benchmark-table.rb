@@ -14,9 +14,10 @@ end
 tabler = VisualWidth::Table.new(
   header: header,
 )
-puts tabler.render(rows)
-#puts Terminal::Table.new(rows: rows, headings: header)
-#puts Text::Table.new(head: header, rows: rows)
+
+a = tabler.render(rows)
+b = Terminal::Table.new(rows: rows, headings: header)
+c = Text::Table.new(head: header, rows: rows)
 
 Benchmark.bmbm do |x|
   x.report("visual_width/table") do

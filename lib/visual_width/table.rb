@@ -10,6 +10,7 @@ class VisualWidth::Table
     @header = header
     @style  = style.clone
     @east_asian = east_asian
+    @padding = ' '
 
     if header
       header.length.times do |i|
@@ -81,23 +82,19 @@ class VisualWidth::Table
 
   def draw_row(output, max_widths, style, row)
     output << '|'
-    rows = []
+    pre  = @padding
+    post = @padding + '|'
+    rows = [] # for multi-lined cell
     max_widths.length.times do |i|
       cell = "#{row[i]}"
       st = (style[i] ||= {})
       align = st[:align] || :left
       width = st[:width] || max_widths[i]
-      c = cell.split(/\n/)
-      if c.length == 0
-        c << ""
-      end
-      output << ' ' << aligner.send(align, c.shift.strip, width) << ' '
-      output << '|'
-      if c.length > 0
-        c.each_with_index do |new_cell, row_id|
-          rows[row_id] ||= []
-          rows[row_id][i] = new_cell
-        end
+      first, *rest = cell.split(/\n/)
+      output << pre << aligner.send(align, first.to_s.strip, width) << post
+      rest.each_with_index do |new_cell, row_idx|
+        rows[row_idx] ||= []
+        rows[row_idx][i] = new_cell
       end
     end
     output << "\n"
