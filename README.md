@@ -34,7 +34,7 @@ See [Ambiguous Characters](http://www.unicode.org/reports/tr11/#Ambiguous) in th
 
 ## `visual_width/table`:
 
-```
+```ruby
     t = VisualWidth::Table.new(
       format: [VisualWidth::Table::LEFT, VisualWidth::Table::RIGHT, VisualWidth::Table::RIGHT]
     )
@@ -67,3 +67,4 @@ See [Ambiguous Characters](http://www.unicode.org/reports/tr11/#Ambiguous) in th
 ## See Also
 
 * [unicode-display_width](https://rubygems.org/gems/unicode-display_width) has the same feature as `VisualWidth.measure()` but it extends String class directly and is much slower than `VisualWidth.measure()`
+* [terminal-table](https://rubygems.org/gems/terminal-table) renders text table, but it cannot deal with East Asian Width characters
